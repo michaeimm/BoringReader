@@ -1,0 +1,215 @@
+package tw.shounenwind.boringreader
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+class LicenseActivity : BaseActivity() {
+    private val listAdapter by lazy {
+        ArrayAdapter()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        screenPrepare()
+    }
+
+    private fun screenPrepare() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeButtonEnabled(true)
+        }
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.orientation = RecyclerView.VERTICAL
+        list_view.apply {
+            this.layoutManager = layoutManager
+            adapter = listAdapter
+        }
+
+        setLicenses()
+    }
+
+    private fun setLicenses() {
+        mainScope?.launch(Dispatchers.IO) {
+            val licenses = ArrayList<License>().apply {
+                add(license("Okio") {
+                    "Copyright 2013 Square, Inc.\n" +
+                            "\n" +
+                            "Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
+                            "you may not use this file except in compliance with the License.\n" +
+                            "You may obtain a copy of the License at\n" +
+                            "\n" +
+                            "   http://www.apache.org/licenses/LICENSE-2.0\n" +
+                            "\n" +
+                            "Unless required by applicable law or agreed to in writing, software\n" +
+                            "distributed under the License is distributed on an \"AS IS\" BASIS,\n" +
+                            "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
+                            "See the License for the specific language governing permissions and\n" +
+                            "limitations under the License.\n"
+                })
+                add(license("Material") {
+                    "Copyright 2015 Rey Pham.\n" +
+                            "\n" +
+                            "Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
+                            "you may not use this file except in compliance with the License.\n" +
+                            "You may obtain a copy of the License at\n" +
+                            "\n" +
+                            "   http://www.apache.org/licenses/LICENSE-2.0\n" +
+                            "\n" +
+                            "Unless required by applicable law or agreed to in writing, software\n" +
+                            "distributed under the License is distributed on an \"AS IS\" BASIS,\n" +
+                            "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
+                            "See the License for the specific language governing permissions and\n" +
+                            "limitations under the License."
+                })
+                add(license("Material Scroll Bar") {
+                    "Copyright 2016-2017 Turing Technologies, an unincorporated orginisation of Wynne Plaga.\n" +
+                            "\n" +
+                            "Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
+                            "you may not use this file except in compliance with the License.\n" +
+                            "You may obtain a copy of the License at\n" +
+                            "\n" +
+                            "   http://www.apache.org/licenses/LICENSE-2.0\n" +
+                            "\n" +
+                            "Unless required by applicable law or agreed to in writing, software\n" +
+                            "distributed under the License is distributed on an \"AS IS\" BASIS,\n" +
+                            "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
+                            "See the License for the specific language governing permissions and\n" +
+                            "limitations under the License.\n" +
+                            "\n" +
+                            "This licensing is applicable to all code offered as part of this\n" +
+                            "repository, which can be identified by the lisence notice preceding\n" +
+                            "the content AND/OR by its inclusion in a package starting with \"com.\n" +
+                            "turingtechnologies.materialscrollbar\"."
+                })
+                add(license("RecyclerView-FastScroll") {
+                    " Copyright (C) 2016 Tim Malseed\n" +
+                            "\n" +
+                            "Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
+                            "you may not use this file except in compliance with the License.\n" +
+                            "You may obtain a copy of the License at\n" +
+                            "\n" +
+                            "   http://www.apache.org/licenses/LICENSE-2.0\n" +
+                            "\n" +
+                            "Unless required by applicable law or agreed to in writing, software\n" +
+                            "distributed under the License is distributed on an \"AS IS\" BASIS,\n" +
+                            "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
+                            "See the License for the specific language governing permissions and\n" +
+                            "limitations under the License."
+                })
+                add(license("Launcher 3") {
+                    " Copyright (C) 2010 The Android Open Source Project\n" +
+                            "\n" +
+                            "Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
+                            "you may not use this file except in compliance with the License.\n" +
+                            "You may obtain a copy of the License at\n" +
+                            "\n" +
+                            "   http://www.apache.org/licenses/LICENSE-2.0\n" +
+                            "\n" +
+                            "Unless required by applicable law or agreed to in writing, software\n" +
+                            "distributed under the License is distributed on an \"AS IS\" BASIS,\n" +
+                            "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
+                            "See the License for the specific language governing permissions and\n" +
+                            "limitations under the License."
+                })
+                add(license("anko") {
+                    "Copyright 2016 JetBrains s.r.o.\n" +
+                            " \n" +
+                            "  Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
+                            "  you may not use this file except in compliance with the License.\n" +
+                            "  You may obtain a copy of the License at\n" +
+                            " \n" +
+                            "  http://www.apache.org/licenses/LICENSE-2.0\n" +
+                            " \n" +
+                            "  Unless required by applicable law or agreed to in writing, software\n" +
+                            "  distributed under the License is distributed on an \"AS IS\" BASIS,\n" +
+                            "  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
+                            "  See the License for the specific language governing permissions and\n" +
+                            "  limitations under the License."
+                })
+                add(license("kotlinx.coroutines") {
+                    "Copyright 2016-2018 JetBrains s.r.o.\n" +
+                            "\n" +
+                            "Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
+                            "you may not use this file except in compliance with the License.\n" +
+                            "You may obtain a copy of the License at\n" +
+                            "\n" +
+                            "http://www.apache.org/licenses/LICENSE-2.0\n" +
+                            "\n" +
+                            "Unless required by applicable law or agreed to in writing, software\n" +
+                            "distributed under the License is distributed on an \"AS IS\" BASIS,\n" +
+                            "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
+                            "See the License for the specific language governing permissions and\n" +
+                            "limitations under the License."
+                })
+            }
+            launch(Dispatchers.Main) { listAdapter.setData(licenses) }
+        }
+
+    }
+
+    override fun finish() {
+        super.finish()
+        listAdapter.setData(ArrayList(0))
+    }
+
+    private inner class License internal constructor(internal val title: String, internal val content: String)
+
+    private inline fun license(title: String, content: () -> String): License {
+        return License(title, content())
+    }
+
+    private inner class ArrayAdapter internal constructor() : RecyclerView.Adapter<ArrayAdapter.ListViewHolder>() {
+
+        internal var data: ArrayList<License>
+
+        init {
+            this.data = ArrayList()
+        }
+
+        fun setData(data: List<License>) {
+            this.data = ArrayList(data.size)
+            this.data.addAll(data)
+            notifyDataSetChanged()
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
+            val rootView = LayoutInflater.from(parent.context).inflate(
+                    R.layout.unit_license,
+                    parent,
+                    false
+            )
+            val lp = RecyclerView.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            rootView.layoutParams = lp
+            return ListViewHolder(rootView)
+        }
+
+        override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
+            holder.title.text = data[position].title
+            holder.content.text = data[position].content
+        }
+
+
+        override fun getItemCount(): Int {
+            return data.size
+        }
+
+        internal inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val title = itemView.findViewById<TextView>(R.id.title)!!
+            val content = itemView.findViewById<TextView>(R.id.content)!!
+        }
+    }
+}
