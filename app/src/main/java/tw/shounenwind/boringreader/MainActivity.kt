@@ -20,7 +20,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okio.buffer
 import okio.source
-import org.apache.commons.lang3.StringUtils
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
@@ -170,24 +169,30 @@ class MainActivity : BaseActivity() {
             Log.d("charset", charset.name())
 
             val result = ArrayList<String>()
-            var lastIndex = 0L
             while (true) {
-                val lineBreakPosition = bufferedSource.peek().indexOf('\n'.toByte(), lastIndex)
-                val str = if (lineBreakPosition == -1L) {
-                    bufferedSource.readString(charset)
-                } else {
-                    bufferedSource.readString(lineBreakPosition - 1, charset).apply {
-                        substring(0, length)
+                val lineBreakPosition = bufferedSource.peek().indexOf('\n'.toByte())
+                val str = when {
+                    lineBreakPosition < 0 -> {
+                        bufferedSource.readString(charset)
+                    }
+                    lineBreakPosition == 0L -> {
                         bufferedSource.skip(1)
+                        " "
+                    }
+                    else -> {
+                        bufferedSource.readString(lineBreakPosition, charset).apply {
+                            substring(0, length)
+                            bufferedSource.skip(1)
+                        }
                     }
                 }
-                lastIndex += lineBreakPosition
-                if (str.isEmpty() && bufferedSource.peek().indexOf('\n'.toByte(), lastIndex) == -1L) {
+
+                if (str.isEmpty() && bufferedSource.peek().indexOf('\n'.toByte()) == -1L) {
                     break
                 }
-                val strings = StringUtils.split(StringUtils.remove(str, '\r'), '\n')
 
-                result.addAll(strings)
+                result.add(str)
+
                 if (isFinishing) {
                     break
                 }
