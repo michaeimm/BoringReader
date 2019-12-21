@@ -151,7 +151,6 @@ class MainActivity : BaseActivity() {
             inputStream = cR.openInputStream(uri)!!
             val fileSource = inputStream.source()
             val bufferedSource = fileSource.buffer()
-            val charset: Charset?
             val detector = UniversalDetector {
 
             }
@@ -159,14 +158,14 @@ class MainActivity : BaseActivity() {
             val data = bufferedSource.peek().readByteArray(1024L)
             detector.handleData(data, 0, data.size)
 
-            charset = if (detector.detectedCharset == null) {
+            val charset = if (detector.detectedCharset == null) {
                 withContext(Dispatchers.Main) {
                     toast(R.string.unknown_charset)
                 }
                 Charset.defaultCharset()
             } else {
                 charset(detector.detectedCharset)
-            } ?: Charsets.ISO_8859_1
+            }
 
             Log.d("charset", charset.name())
 
