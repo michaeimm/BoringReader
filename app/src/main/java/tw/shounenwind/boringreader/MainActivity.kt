@@ -53,7 +53,17 @@ class MainActivity : BaseActivity() {
 
         val intent = intent
         val intentType = intent.type ?: ""
-        if (intent != null
+        if (savedInstanceState?.getString("currentFile") != null) {
+            val pd = ProgressDialog(this).show {
+                setContent(getString(R.string.loading))
+                setCancelable(false)
+            }
+            GlobalScope.launch {
+                val content = getFileContent(Uri.parse(savedInstanceState.getString("currentFile")))
+                bindData(content)
+                withContext(Dispatchers.Main) { pd.dismiss() }
+            }
+        } else if (intent != null
             && (Intent.ACTION_SEND == intent.action || Intent.ACTION_VIEW == intent.action)
         ) {
             if (intentType.startsWith("text/")) {
@@ -70,6 +80,11 @@ class MainActivity : BaseActivity() {
                 toast(R.string.unsupported_format)
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("currentFile", currentFile.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
