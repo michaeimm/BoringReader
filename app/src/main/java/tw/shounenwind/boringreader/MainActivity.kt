@@ -181,7 +181,7 @@ class MainActivity : BaseActivity() {
                 if (str.isEmpty() && bufferedSource.peek().indexOf('\n'.toByte(), lastIndex) == -1L) {
                     break
                 }
-                val strings = StringUtils.split(StringUtils.remove(str, "\r"), '\n')
+                val strings = StringUtils.split(StringUtils.remove(str, '\r'), '\n')
 
                 result.addAll(strings)
                 if (isFinishing) {
