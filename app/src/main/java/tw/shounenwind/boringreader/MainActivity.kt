@@ -59,7 +59,7 @@ class MainActivity : BaseActivity() {
         ) {
             if (intentType.startsWith("text/")) {
                 val pd = ProgressDialog(this).show {
-                    setContent("載入中")
+                    setContent(getString(R.string.loading))
                     setCancelable(false)
                 }
                 GlobalScope.launch {
@@ -68,7 +68,7 @@ class MainActivity : BaseActivity() {
                     withContext(Dispatchers.Main) { pd.dismiss() }
                 }
             } else {
-                toast("不支援的格式")
+                toast(R.string.unsupported_format)
             }
         }
     }
@@ -88,7 +88,12 @@ class MainActivity : BaseActivity() {
                 val intent = Intent()
                     .setType("text/*")
                     .setAction(Intent.ACTION_GET_CONTENT)
-                startActivityForResult(Intent.createChooser(intent, "Select a TXT file"), 0)
+                startActivityForResult(
+                    Intent.createChooser(
+                        intent,
+                        getString(R.string.select_a_text_file)
+                    ), 0
+                )
                 true
             }
             R.id.action_license -> {
@@ -106,7 +111,7 @@ class MainActivity : BaseActivity() {
         when {
             requestCode == 0 && resultCode == Activity.RESULT_OK && data?.data != null -> {
                 val pd = ProgressDialog(this).show {
-                    setContent("載入中")
+                    setContent(getString(R.string.loading))
                     setCancelable(false)
                 }
                 GlobalScope.launch {
@@ -188,7 +193,7 @@ class MainActivity : BaseActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
             withContext(Dispatchers.Main) {
-                toast("發生錯誤，已關閉檔案")
+                toast(R.string.error_and_close)
             }
             return@withContext emptyList()
         } finally {

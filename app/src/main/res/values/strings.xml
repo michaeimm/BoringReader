@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Boring Reader</string>
-    <string name="action_open">Open…</string>
+    <string name="action_open">開啟…</string>
     <string name="action_license">License</string>
+    <string name="loading">載入中</string>
+    <string name="unsupported_format">不支援的格式</string>
+    <string name="select_a_text_file">選擇文字檔</string>
+    <string name="error_and_close">發生錯誤，已關閉檔案</string>
+    <string name="open_a_file_from_menu">從選單開啟檔案</string>
 </resources>
