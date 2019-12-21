@@ -155,7 +155,7 @@ class MainActivity : BaseActivity() {
 
             }
 
-            val data = bufferedSource.peek().readByteArray(1024L)
+            val data = bufferedSource.peek().readByteArray()
             detector.handleData(data, 0, data.size)
 
             val charset = if (detector.detectedCharset == null) {
