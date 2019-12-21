@@ -8,4 +8,5 @@
     <string name="select_a_text_file">Select a text file</string>
     <string name="error_and_close">An error occurred and the file was closed</string>
     <string name="open_a_file_from_menu">Open a file from menu</string>
+    <string name="unknown_charset">Unknown charset. Using default charset.</string>
 </resources>

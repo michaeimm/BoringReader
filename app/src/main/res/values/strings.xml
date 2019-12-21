@@ -7,4 +7,5 @@
     <string name="select_a_text_file">選擇文字檔</string>
     <string name="error_and_close">發生錯誤，已關閉檔案</string>
     <string name="open_a_file_from_menu">從選單開啟檔案</string>
+    <string name="unknown_charset">不明的編碼，將使用預設值</string>
 </resources>

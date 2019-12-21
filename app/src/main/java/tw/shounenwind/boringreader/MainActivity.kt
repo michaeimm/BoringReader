@@ -156,14 +156,19 @@ class MainActivity : BaseActivity() {
 
             }
 
-            val data = bufferedSource.peek().readByteArray()
+            val data = bufferedSource.peek().readByteArray(1024L)
             detector.handleData(data, 0, data.size)
 
             charset = if (detector.detectedCharset == null) {
-                charset("US-ASCII")
+                withContext(Dispatchers.Main) {
+                    toast(R.string.unknown_charset)
+                }
+                Charset.defaultCharset()
             } else {
                 charset(detector.detectedCharset)
-            }
+            } ?: Charsets.ISO_8859_1
+
+            Log.d("charset", charset.name())
 
             val result = ArrayList<String>()
             var lastIndex = 0L
