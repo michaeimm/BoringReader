@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LicenseActivity : BaseActivity() {
     private val listAdapter by lazy {
@@ -191,7 +192,7 @@ class LicenseActivity : BaseActivity() {
                             " * ***** END LICENSE BLOCK ***** */"
                 })
             }
-            launch(Dispatchers.Main) { listAdapter.setData(licenses) }
+            withContext(Dispatchers.Main) { listAdapter.setData(licenses) }
         }
 
     }
