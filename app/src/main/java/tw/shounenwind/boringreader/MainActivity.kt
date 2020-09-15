@@ -10,7 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.core.content.edit
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turingtechnologies.materialscrollbar.CustomIndicator
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,7 +45,7 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         list_view.layoutManager = LinearLayoutManager(this)
         list_view.adapter = adapter
-        viewModel.lines.observe(this, Observer {
+        viewModel.lines.observe(this, {
             bindData(it)
         })
 

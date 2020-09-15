@@ -202,15 +202,15 @@ class LicenseActivity : BaseActivity() {
         listAdapter.setData(ArrayList(0))
     }
 
-    private inner class License internal constructor(internal val title: String, internal val content: String)
+    private inner class License(val title: String, val content: String)
 
     private inline fun license(title: String, content: () -> String): License {
         return License(title, content())
     }
 
-    private inner class ArrayAdapter internal constructor() : RecyclerView.Adapter<ArrayAdapter.ListViewHolder>() {
+    private inner class ArrayAdapter : RecyclerView.Adapter<ArrayAdapter.ListViewHolder>() {
 
-        internal var data: ArrayList<License>
+        var data: ArrayList<License>
 
         init {
             this.data = ArrayList()
@@ -246,7 +246,7 @@ class LicenseActivity : BaseActivity() {
             return data.size
         }
 
-        internal inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val title = itemView.findViewById<TextView>(R.id.title)!!
             val content = itemView.findViewById<TextView>(R.id.content)!!
         }
