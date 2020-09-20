@@ -7,6 +7,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import okio.buffer
@@ -20,7 +24,7 @@ class MainViewModel : ViewModel() {
     private val _lines = MutableLiveData<List<String>>()
     val lines: LiveData<List<String>> = _lines
 
-    suspend fun getFileContent(mContext: Context, uri: Uri) = withContext(Dispatchers.IO) {
+    suspend fun getFileContent(mContext: Context, uri: Uri) = withContext(Dispatchers.Default) {
         Log.d("open", uri.toString())
         try {
             val cR = mContext.contentResolver
@@ -47,34 +51,39 @@ class MainViewModel : ViewModel() {
                 Log.d("charset", charset.name())
 
                 val result = ArrayList<String>()
-                while (true) {
-                    val lineBreakPosition = bufferedSource.peek().indexOf('\n'.toByte())
-                    val str = when {
-                        lineBreakPosition < 0 -> {
-                            bufferedSource.readString(charset)
-                        }
-                        lineBreakPosition == 0L -> {
-                            bufferedSource.skip(1)
-                            " "
-                        }
-                        else -> {
-                            bufferedSource.readString(lineBreakPosition, charset).apply {
-                                substring(0, length)
+                flow {
+                    while (true) {
+                        val lineBreakPosition = bufferedSource.peek().indexOf('\n'.toByte())
+                        val str = when {
+                            lineBreakPosition < 0 -> {
+                                bufferedSource.readString(charset)
+                            }
+                            lineBreakPosition == 0L -> {
                                 bufferedSource.skip(1)
+                                " "
+                            }
+                            else -> {
+                                bufferedSource.readString(lineBreakPosition, charset).apply {
+                                    substring(0, length)
+                                    bufferedSource.skip(1)
+                                }
                             }
                         }
-                    }
 
-                    if (str.isEmpty() && bufferedSource.peek().indexOf('\n'.toByte()) == -1L) {
-                        break
-                    }
+                        if (str.isEmpty() && bufferedSource.peek().indexOf('\n'.toByte()) == -1L) {
+                            break
+                        }
 
-                    result.add(str)
+                        emit(str)
 
-                    if (!isActive) {
-                        break
+                        if (!isActive) {
+                            break
+                        }
                     }
+                }.flowOn(Dispatchers.IO).buffer().collect {
+                    result.add(it)
                 }
+
                 _lines.postValue(result)
             }
         } catch (e: Exception) {
