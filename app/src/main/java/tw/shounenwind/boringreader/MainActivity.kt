@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.turingtechnologies.materialscrollbar.CustomIndicator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.coroutines.Dispatchers
@@ -48,13 +47,6 @@ class MainActivity : BaseActivity() {
         viewModel.lines.observe(this, {
             bindData(it)
         })
-
-        dragScrollBar.apply {
-            setIndicator(
-                CustomIndicator(this@MainActivity),
-                true
-            )
-        }
 
         val intent = intent
         val intentType = intent.type ?: ""

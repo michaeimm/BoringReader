@@ -93,14 +93,14 @@ class LicenseActivity : BaseActivity() {
                             "the content AND/OR by its inclusion in a package starting with \"com.\n" +
                             "turingtechnologies.materialscrollbar\"."
                 })
-                add(license("RecyclerView-FastScroll") {
-                    " Copyright (C) 2016 Tim Malseed\n" +
+                add(license("RecyclerView-FastScroller") {
+                    "Copyright 2018 Quiph Media Pvt Ltd\n" +
                             "\n" +
                             "Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
                             "you may not use this file except in compliance with the License.\n" +
                             "You may obtain a copy of the License at\n" +
                             "\n" +
-                            "   http://www.apache.org/licenses/LICENSE-2.0\n" +
+                            "http://www.apache.org/licenses/LICENSE-2.0\n" +
                             "\n" +
                             "Unless required by applicable law or agreed to in writing, software\n" +
                             "distributed under the License is distributed on an \"AS IS\" BASIS,\n" +

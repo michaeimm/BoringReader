@@ -16,31 +16,22 @@
             android:text="@string/open_a_file_from_menu"
             android:gravity="center_horizontal"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"/>
+            android:layout_marginRight="16dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list_view"
+    <com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
+            android:id="@+id/fastScroller"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            app:handleDrawable="@drawable/fastscroller_track"
+            app:handleHeight="40dp"
+            app:handleWidth="16dp"
+            app:popupDrawable="@drawable/fastscroller_popup_block">
 
-    <com.turingtechnologies.materialscrollbar.TouchScrollBar
-            android:id="@+id/dragScrollBar"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_toLeftOf="@id/list_view"
-            android:layout_toStartOf="@id/list_view"
-            app:msb_lightOnTouch="false"
-            app:msb_recyclerView="@id/list_view"
-            app:msb_handleColor="@android:color/darker_gray"
-            app:msb_barColor="@android:color/transparent"
-            app:msb_scrollMode="lastElement" />
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+    </com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller>
 
 </RelativeLayout>

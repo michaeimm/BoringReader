@@ -4,20 +4,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.turingtechnologies.materialscrollbar.ICustomAdapter
+import com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
 import org.jetbrains.anko.AnkoContext
 import tw.shounenwind.boringreader.MainAdapter.TextViewHolder
 
-class MainAdapter : RecyclerView.Adapter<TextViewHolder>(), ICustomAdapter {
+class MainAdapter : RecyclerView.Adapter<TextViewHolder>(),
+    RecyclerViewFastScroller.OnPopupTextUpdate {
 
-    var data : List<String>? = null
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
+    var data: List<String>? = null
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
-    override fun getCustomStringForElement(element: Int): String {
-        return element.toString()
+    override fun onChange(position: Int): CharSequence {
+        return position.toString()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TextViewHolder {
