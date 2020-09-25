@@ -20,6 +20,7 @@ import kotlinx.coroutines.withContext
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class MainActivity : BaseActivity() {
@@ -28,7 +29,7 @@ class MainActivity : BaseActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private var currentFile: Uri? = null
     private var lineNumber = 0
-    private val viewModel = MainViewModel()
+    private val viewModel: MainViewModel by viewModel()
     private var pd: ProgressDialog? = null
         set(value) {
             field?.dismiss()
@@ -44,35 +45,38 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         list_view.layoutManager = LinearLayoutManager(this)
         list_view.adapter = adapter
-        viewModel.lines.observe(this, {
-            bindData(it)
-        })
 
         val intent = intent
         val intentType = intent.type ?: ""
-        if (savedInstanceState?.getString("currentFile") != null) {
-            pd = ProgressDialog(this).show {
-                setContent(getString(R.string.loading))
-                setCancelable(false)
-            }
-            GlobalScope.launch {
-                getFileContent(Uri.parse(savedInstanceState.getString("currentFile")))
-            }
-        } else if (intent != null
-            && (Intent.ACTION_SEND == intent.action || Intent.ACTION_VIEW == intent.action)
-        ) {
-            if (intentType.startsWith("text/")) {
+        if (viewModel.lines.value?.isNotEmpty() == true) {
+            if (savedInstanceState?.getString("currentFile") != null) {
                 pd = ProgressDialog(this).show {
                     setContent(getString(R.string.loading))
                     setCancelable(false)
                 }
                 GlobalScope.launch {
-                    getFileContent(intent.data!!)
+                    getFileContent(Uri.parse(savedInstanceState.getString("currentFile")))
                 }
-            } else {
-                toast(R.string.unsupported_format)
+            } else if (intent != null
+                && (Intent.ACTION_SEND == intent.action || Intent.ACTION_VIEW == intent.action)
+            ) {
+                if (intentType.startsWith("text/")) {
+                    pd = ProgressDialog(this).show {
+                        setContent(getString(R.string.loading))
+                        setCancelable(false)
+                    }
+                    GlobalScope.launch {
+                        getFileContent(intent.data!!)
+                    }
+                } else {
+                    toast(R.string.unsupported_format)
+                }
             }
         }
+
+        viewModel.lines.observe(this, {
+            bindData(it)
+        })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
