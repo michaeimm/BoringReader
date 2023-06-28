@@ -11,16 +11,14 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : BaseActivity() {
@@ -38,13 +36,15 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        GlobalScope.launch(Dispatchers.IO) {
+        mainScope?.launch(Dispatchers.IO) {
             sharedPreferences = defaultSharedPreferences
         }
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
-        list_view.layoutManager = LinearLayoutManager(this)
-        list_view.adapter = adapter
+        setSupportActionBar(findViewById(R.id.toolbar))
+        findViewById<RecyclerView>(R.id.list_view).apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = adapter
+        }
 
         val intent = intent
         val intentType = intent.type ?: ""
@@ -54,7 +54,7 @@ class MainActivity : BaseActivity() {
                     setContent(getString(R.string.loading))
                     setCancelable(false)
                 }
-                GlobalScope.launch {
+                mainScope?.launch {
                     getFileContent(Uri.parse(savedInstanceState.getString("currentFile")))
                 }
             } else if (intent != null
@@ -65,7 +65,7 @@ class MainActivity : BaseActivity() {
                         setContent(getString(R.string.loading))
                         setCancelable(false)
                     }
-                    GlobalScope.launch {
+                    mainScope?.launch {
                         getFileContent(intent.data!!)
                     }
                 } else {
@@ -74,9 +74,9 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        viewModel.lines.observe(this, {
+        viewModel.lines.observe(this) {
             bindData(it)
-        })
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -125,7 +125,7 @@ class MainActivity : BaseActivity() {
                     setContent(getString(R.string.loading))
                     setCancelable(false)
                 }
-                GlobalScope.launch {
+                mainScope?.launch {
                     getFileContent(data.data!!)
                 }
             }
@@ -135,7 +135,8 @@ class MainActivity : BaseActivity() {
     override fun onPause() {
         currentFile?.also {
             sharedPreferences.edit {
-                lineNumber = (list_view.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                lineNumber = (findViewById<RecyclerView>(R.id.list_view)
+                    .layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                 putInt(it.toString(), lineNumber)
             }
         }
@@ -145,8 +146,8 @@ class MainActivity : BaseActivity() {
     private fun bindData(data: List<String>) {
         Log.d("binding", "size: " + data.size)
         adapter.data = data
-        hello_world.visibility = View.GONE
-        list_view.scrollToPosition(lineNumber)
+        findViewById<RecyclerView>(R.id.hello_world).visibility = View.GONE
+        findViewById<RecyclerView>(R.id.list_view).scrollToPosition(lineNumber)
         pd = null
     }
 
