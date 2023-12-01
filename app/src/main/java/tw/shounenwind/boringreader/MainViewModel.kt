@@ -53,7 +53,7 @@ class MainViewModel : ViewModel() {
                 val result = ArrayList<String>()
                 flow {
                     while (true) {
-                        val lineBreakPosition = bufferedSource.peek().indexOf('\n'.toByte())
+                        val lineBreakPosition = bufferedSource.peek().indexOf('\n'.code.toByte())
                         val str = when {
                             lineBreakPosition < 0 -> {
                                 bufferedSource.readString(charset)
@@ -70,7 +70,7 @@ class MainViewModel : ViewModel() {
                             }
                         }
 
-                        if (str.isEmpty() && bufferedSource.peek().indexOf('\n'.toByte()) == -1L) {
+                        if (str.isEmpty() && bufferedSource.peek().indexOf('\n'.code.toByte()) == -1L) {
                             break
                         }
 
