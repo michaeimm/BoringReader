@@ -5,23 +5,23 @@ plugins {
 }
 
 android {
-    compileSdkVersion 34
+    compileSdk 36
     defaultConfig {
         applicationId "tw.shounenwind.boringreader"
-        minSdkVersion 16
-        targetSdkVersion 34
+        minSdkVersion 21
+        targetSdkVersion 36
         versionCode 3
         versionName "1.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     namespace "tw.shounenwind.boringreader"
-    buildToolsVersion = '33.0.2'
+    buildToolsVersion = '36.0.0'
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_17
     }
     buildTypes {
         release {
@@ -40,28 +40,24 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.10.0'
-    implementation 'com.squareup.okio:okio:3.2.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-    implementation "org.jetbrains.anko:anko:0.10.8"
-    implementation "org.jetbrains.anko:anko-appcompat-v7:0.10.8"
-    implementation "org.jetbrains.anko:anko-constraint-layout:0.10.8"
-    implementation "org.jetbrains.anko:anko-design:0.10.8"
-    implementation "org.jetbrains.anko:anko-recyclerview-v7:0.10.8"
-    implementation group: 'org.apache.commons', name: 'commons-text', version: "1.10.0"
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.core:core-ktx:1.17.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation 'com.google.android.material:material:1.13.0'
+    implementation 'com.squareup.okio:okio:3.16.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
+    implementation group: 'org.apache.commons', name: 'commons-text', version: "1.14.0"
     implementation 'com.quiph.ui:recyclerviewfastscroller:1.0.0'
     implementation 'com.pnikosis:materialish-progress:1.7'
-    implementation group: 'com.github.albfernandez', name: 'juniversalchardet', version: '2.3.0'
+    implementation group: 'com.github.albfernandez', name: 'juniversalchardet', version: '2.5.0'
     // Koin for Kotlin
     implementation "io.insert-koin:koin-core:$koin_version"
     // Koin for Android
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "io.insert-koin:koin-android-compat:$koin_version"
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation("androidx.preference:preference-ktx:1.2.1")
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:runner:1.7.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
 }

@@ -1,6 +1,5 @@
 package tw.shounenwind.boringreader
 
-import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -9,16 +8,22 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.edit
+import androidx.core.net.toUri
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.anko.defaultSharedPreferences
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import tw.shounenwind.boringreader.CommonUtils.INSET_LEFT
+import tw.shounenwind.boringreader.CommonUtils.INSET_RIGHT
+import tw.shounenwind.boringreader.CommonUtils.INSET_TOP
+import tw.shounenwind.boringreader.CommonUtils.applyInsets
+import tw.shounenwind.boringreader.CommonUtils.intentFor
 
 
 class MainActivity : BaseActivity() {
@@ -37,9 +42,10 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainScope?.launch(Dispatchers.IO) {
-            sharedPreferences = defaultSharedPreferences
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
         }
         setContentView(R.layout.activity_main)
+        findViewById<View>(R.id.root_view).applyInsets(INSET_LEFT + INSET_RIGHT + INSET_TOP)
         setSupportActionBar(findViewById(R.id.toolbar))
         findViewById<RecyclerView>(R.id.list_view).apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -55,7 +61,7 @@ class MainActivity : BaseActivity() {
                     setCancelable(false)
                 }
                 mainScope?.launch {
-                    getFileContent(Uri.parse(savedInstanceState.getString("currentFile")))
+                    getFileContent(savedInstanceState.getString("currentFile")!!.toUri())
                 }
             } else if (intent != null
                 && (Intent.ACTION_SEND == intent.action || Intent.ACTION_VIEW == intent.action)
@@ -69,7 +75,7 @@ class MainActivity : BaseActivity() {
                         getFileContent(intent.data!!)
                     }
                 } else {
-                    toast(R.string.unsupported_format)
+                    Toast.makeText(this, R.string.unsupported_format, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -107,10 +113,13 @@ class MainActivity : BaseActivity() {
                 )
                 true
             }
+
             R.id.action_license -> {
+
                 startActivity(intentFor<LicenseActivity>())
                 true
             }
+
             else -> {
                 super.onOptionsItemSelected(item)
             }
@@ -120,7 +129,7 @@ class MainActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when {
-            requestCode == 0 && resultCode == Activity.RESULT_OK && data?.data != null -> {
+            requestCode == 0 && resultCode == RESULT_OK && data?.data != null -> {
                 pd = ProgressDialog(this).show {
                     setContent(getString(R.string.loading))
                     setCancelable(false)
@@ -146,7 +155,7 @@ class MainActivity : BaseActivity() {
     private fun bindData(data: List<String>) {
         Log.d("binding", "size: " + data.size)
         adapter.data = data
-        findViewById<RecyclerView>(R.id.hello_world).visibility = View.GONE
+        findViewById<TextView>(R.id.hello_world).visibility = View.GONE
         findViewById<RecyclerView>(R.id.list_view).scrollToPosition(lineNumber)
         pd = null
     }

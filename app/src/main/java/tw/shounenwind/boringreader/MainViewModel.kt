@@ -3,19 +3,18 @@ package tw.shounenwind.boringreader
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.buffer
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import okio.buffer
 import okio.source
-import org.jetbrains.anko.toast
 import org.mozilla.universalchardet.UniversalDetector
 import java.nio.charset.Charset
 
@@ -41,7 +40,8 @@ class MainViewModel : ViewModel() {
 
                 val charset = if (detector.detectedCharset == null) {
                     withContext(Dispatchers.Main) {
-                        mContext.toast(R.string.unknown_charset)
+                        Toast.makeText(mContext, R.string.unknown_charset, Toast.LENGTH_SHORT)
+                            .show()
                     }
                     Charset.defaultCharset()
                 } else {
@@ -58,10 +58,12 @@ class MainViewModel : ViewModel() {
                             lineBreakPosition < 0 -> {
                                 bufferedSource.readString(charset)
                             }
+
                             lineBreakPosition == 0L -> {
                                 bufferedSource.skip(1)
                                 " "
                             }
+
                             else -> {
                                 bufferedSource.readString(lineBreakPosition, charset).apply {
                                     substring(0, length)
@@ -70,7 +72,9 @@ class MainViewModel : ViewModel() {
                             }
                         }
 
-                        if (str.isEmpty() && bufferedSource.peek().indexOf('\n'.code.toByte()) == -1L) {
+                        if (str.isEmpty() && bufferedSource.peek()
+                                .indexOf('\n'.code.toByte()) == -1L
+                        ) {
                             break
                         }
 
@@ -89,7 +93,8 @@ class MainViewModel : ViewModel() {
         } catch (e: Exception) {
             e.printStackTrace()
             withContext(Dispatchers.Main) {
-                mContext.toast(R.string.error_and_close)
+                Toast.makeText(mContext, R.string.error_and_close, Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }

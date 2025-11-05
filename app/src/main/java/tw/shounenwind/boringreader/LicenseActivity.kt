@@ -10,6 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import tw.shounenwind.boringreader.CommonUtils.INSET_BOTTOM
+import tw.shounenwind.boringreader.CommonUtils.INSET_LEFT
+import tw.shounenwind.boringreader.CommonUtils.INSET_RIGHT
+import tw.shounenwind.boringreader.CommonUtils.INSET_TOP
+import tw.shounenwind.boringreader.CommonUtils.applyInsets
 
 class LicenseActivity : BaseActivity() {
     private val listAdapter by lazy {
@@ -19,6 +24,8 @@ class LicenseActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        findViewById<View>(R.id.root_view).applyInsets(INSET_LEFT + INSET_RIGHT + INSET_TOP + INSET_BOTTOM)
+        findViewById<TextView>(R.id.hello_world).visibility = View.GONE
         screenPrepare()
     }
 
@@ -34,7 +41,6 @@ class LicenseActivity : BaseActivity() {
             this.layoutManager = layoutManager
             adapter = listAdapter
         }
-
         setLicenses()
     }
 
@@ -215,7 +221,7 @@ class LicenseActivity : BaseActivity() {
         listAdapter.setData(ArrayList(0))
     }
 
-    private inner class License(val title: String, val content: String)
+    private class License(val title: String, val content: String)
 
     private inline fun license(title: String, content: () -> String): License {
         return License(title, content())
@@ -237,13 +243,13 @@ class LicenseActivity : BaseActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
             val rootView = LayoutInflater.from(parent.context).inflate(
-                    R.layout.unit_license,
-                    parent,
-                    false
+                R.layout.unit_license,
+                parent,
+                false
             )
             val lp = RecyclerView.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
             )
             rootView.layoutParams = lp
             return ListViewHolder(rootView)
