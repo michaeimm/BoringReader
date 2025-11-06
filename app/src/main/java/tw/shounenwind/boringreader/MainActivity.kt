@@ -28,7 +28,7 @@ import tw.shounenwind.boringreader.CommonUtils.intentFor
 
 class MainActivity : BaseActivity() {
 
-    private val adapter = MainAdapter()
+    private val mainAdapter = MainAdapter()
     private lateinit var sharedPreferences: SharedPreferences
     private var currentFile: Uri? = null
     private var lineNumber = 0
@@ -49,7 +49,7 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         findViewById<RecyclerView>(R.id.list_view).apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = adapter
+            adapter = mainAdapter
         }
 
         val intent = intent
@@ -154,7 +154,7 @@ class MainActivity : BaseActivity() {
 
     private fun bindData(data: List<String>) {
         Log.d("binding", "size: " + data.size)
-        adapter.data = data
+        mainAdapter.data = data
         findViewById<TextView>(R.id.hello_world).visibility = View.GONE
         findViewById<RecyclerView>(R.id.list_view).scrollToPosition(lineNumber)
         pd = null
